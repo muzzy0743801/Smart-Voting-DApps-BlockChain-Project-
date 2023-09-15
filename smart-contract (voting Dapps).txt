@@ -1,0 +1,95 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.0;
+
+contract VotingDApp {
+    address public admin;
+    mapping(address => bool) public voters;
+    mapping(address => bool) public hasVoted;
+    mapping(address => bool) public candidates;
+    mapping(bytes32 => uint256) public voteCounts;
+    mapping(uint256 => bytes32) public proposals; 
+    uint256 public proposalCount;
+
+    mapping(address => string) public voterNames;
+    mapping(address => bytes32[]) public voterVotes;
+
+    event Voted(address indexed voter, bytes32 proposal);
+
+    constructor() {
+        admin = msg.sender;
+    }
+
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only admin can perform this action");
+        _;
+    }
+
+    modifier onlyVoter() {
+        require(voters[msg.sender], "Only authorized voters can perform this action");
+        _;
+    }
+
+    modifier onlyCandidate() {
+        require(candidates[msg.sender], "Only authorized candidates can perform this action");
+        _;
+    }
+
+    modifier notVoted() {
+        require(!hasVoted[msg.sender], "You have already voted");
+        _;
+    }
+
+    function addVoter(address _voter) public onlyAdmin {
+        voters[_voter] = true;
+    }
+
+    function removeVoter(address _voter) public onlyAdmin {
+        delete voters[_voter];
+        delete hasVoted[_voter];
+    }
+
+    function addCandidate(address _candidate) public onlyAdmin {
+        candidates[_candidate] = true;
+    }
+
+    function removeCandidate(address _candidate) public onlyAdmin {
+        delete candidates[_candidate];
+    }
+
+    function vote(bytes32 _proposal) public onlyVoter notVoted {
+        voteCounts[_proposal]++;
+        voterVotes[msg.sender].push(_proposal);
+        hasVoted[msg.sender] = true;
+        emit Voted(msg.sender, _proposal);
+    }
+
+    function getCandidateVoteCount(bytes32 _candidate) public view returns (uint256) {
+        return voteCounts[_candidate];
+    }
+    
+    function addProposal(bytes32 _proposal) public onlyAdmin {
+        proposals[proposalCount] = _proposal;
+        proposalCount++;
+    }
+
+    function getProposalAtIndex(uint256 _index) public view returns (bytes32) {
+        require(_index < proposalCount, "Invalid proposal index");
+        return proposals[_index];
+    }
+
+    function getProposalCount() public view returns (uint256) {
+        return proposalCount;
+    }
+
+    function setVoterName(string memory _name) public onlyVoter {
+        voterNames[msg.sender] = _name;
+    }
+
+    function getVoterName(address _voter) public view returns (string memory) {
+        return voterNames[_voter];
+    }
+
+    function getVoterVotes(address _voter) public view returns (bytes32[] memory) {
+        return voterVotes[_voter];
+    }
+}

@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.admin-actions, .voter-actions, .proposals, .voter-votes {
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+}
+
+.admin-actions button, .voter-actions button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.admin-actions button:hover, .voter-actions button:hover {
+    background-color: #0056b3;
+}
+
+.vote-section {
+    margin-top: 10px;
+    display: flex;
+}
+
+.vote-section input[type="text"] {
+    flex-grow: 1;
+    padding: 6px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.vote-section button {
+    padding: 6px 12px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.vote-section button:hover {
+    background-color: #0056b3;
+}
+
+.proposal-list, .voter-votes-list {
+    margin-top: 10px;
+}
+
+.status {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.error-message {
+    color: #ff0000;
+}
+
+.success-message {
+    color: #00cc00;
+}
